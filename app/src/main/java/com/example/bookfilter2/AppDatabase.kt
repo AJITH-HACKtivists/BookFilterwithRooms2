@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Myauthors::class], version = 1)
+@Database(entities = [AuthorDetails::class,BookDetail::class], version = 1, exportSchema = false)
 abstract class AppDatabase:RoomDatabase() {
     abstract fun authorDao(): AuthorDao
+    abstract fun BookDao():BookDao
     companion object{
         @Volatile
         private var INSTANCE:AppDatabase?=null
@@ -20,7 +21,7 @@ abstract class AppDatabase:RoomDatabase() {
                 val instance= Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "Myauthors_database"
+                    "Myy_database"
                 ).allowMainThreadQueries().build()
                 INSTANCE=instance
                 return instance
