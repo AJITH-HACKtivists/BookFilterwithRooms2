@@ -10,10 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.room.Database
 import androidx.room.Room
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity()
@@ -39,9 +36,12 @@ class MainActivity : AppCompatActivity()
                 CoroutineScope(Dispatchers.IO).launch {
 
                     var result = authlist.getMyBookData()
-
+                    for (i in result)
+                        titles.add(i)
+                }
+                GlobalScope.launch {
                     var auth:Int=0
-                        for (item in result) {
+                        for (item in titles) {
                             titles.add(item)
                            c = 0
                             val AuthursList: List<AuthorDetails> = AppDatabase.getDatabase(this@MainActivity).authorDao().getAll()
@@ -90,7 +90,6 @@ class MainActivity : AppCompatActivity()
                                         )
                             }
                         }
-
                     val list:List<Authorandbook> = AppDatabase.getDatabase(this@MainActivity).authorDao().JoinedDetails(authorInput.editText?.text?.toString()?.lowercase())
                     withContext(Dispatchers.Main) {
 
