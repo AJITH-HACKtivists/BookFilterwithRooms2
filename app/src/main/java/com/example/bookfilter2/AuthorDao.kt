@@ -11,7 +11,7 @@ interface AuthorDao {
     @Query("Select * from authordetails")
     fun getAll():List<AuthorDetails>
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(auth:AuthorDetails):Long
+    suspend fun insert(auth:AuthorDetails)
     @Query("Select * from authordetails where author=:name")
     fun getAuhtor(name:String):AuthorDetails
     @Query("Select * from AUTHORDETAILS a Join BooksDetail b on a.Aid=b.aid where Lower(a.author)=:name")
