@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.room.Database
 import androidx.room.Room
 import com.google.android.material.textfield.TextInputLayout
@@ -14,11 +16,10 @@ import kotlinx.coroutines.withContext
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var ViewModell:AuthorsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
         val authorInput = findViewById<TextInputLayout>(R.id.AuthorInput)
         val country = findViewById<TextInputLayout>(R.id.Country)
         val dataCount = findViewById<TextView>(R.id.resultOne)
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         val titles = mutableListOf<String>()
         val myApplication=application as MyApplication
         val authlist=myApplication.httpApiService
-
+        ViewModell=ViewModelProvider(this).get(AuthorsViewModel::class.java)
         filterButton.setOnClickListener {
             titles.clear()
             dataCount.text = ""
@@ -40,9 +41,9 @@ class MainActivity : AppCompatActivity() {
                     var result = authlist.getMyBookData()
                     for (item in result) {
                         var a:Myauthors=Myauthors(author = item.author, country = item.country,title=item.title, imageLink = item.imageLink, link = item.link, pages = item.pages, language = item.language,year=item.year)
-                        AppDatabase.getDatabase(this@MainActivity).authorDao().insert(a)
+                        ViewModell.addUser(a)
                     }
-                    val AuthursList:List<Myauthors> = AppDatabase.getDatabase(this@MainActivity).authorDao().getAll()
+                    val AuthursList:List<Myauthors> = ViewModell.ReadAllData
                     for(i in AuthursList){
                         if(i.author?.lowercase()==authorInput.editText?.text?.toString()?.lowercase() && i.country?.lowercase()==country.editText?.text?.toString()?.lowercase()){
                             titles.add(i.title.toString())
