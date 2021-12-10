@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity()
         val titles = mutableListOf<Bookdata>()
         val myApplication=application as MyApplication
         val authlist=myApplication.httpApiService
+        val db=AppDatabase.getDatabase(this)
         filterButton.setOnClickListener {
             titles.clear()
             dataCount.text = ""
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity()
                         for (item in titles) {
                             titles.add(item)
                            c = 0
-                            val AuthursList: List<AuthorDetails> = AppDatabase.getDatabase(this@MainActivity).authorDao().getAll()
+                            val AuthursList: List<AuthorDetails> = db.authorDao().getAll()
                                 //var aa: AuthorDetails = AuthorDetails(author = item.author, country = item.country)
                                 for (items in AuthursList) {
                                     if (items.author.lowercase() == item.author.lowercase()) {
@@ -54,7 +55,7 @@ class MainActivity : AppCompatActivity()
                                     }
                                 }
                                 if (c == 1) {
-                                    AppDatabase.getDatabase(this@MainActivity).BookDao()
+                                    db.BookDao()
                                         .InsertBooks(
                                             BookDetail(
                                                 aid = auth,
@@ -67,16 +68,16 @@ class MainActivity : AppCompatActivity()
                                             )
                                         )
                                 } else {
-                                    AppDatabase.getDatabase(this@MainActivity).authorDao().insert(
+                                    db.authorDao().insert(
                                         AuthorDetails(
                                             author = item.author,
                                             country = item.country
                                         )
                                     )
 
-                                    auth = AppDatabase.getDatabase(this@MainActivity).authorDao()
+                                    auth = db.authorDao()
                                         .getAuhtor(item.author).Aid
-                                    AppDatabase.getDatabase(this@MainActivity).BookDao()
+                                    db.BookDao()
                                         .InsertBooks(
                                             BookDetail(
                                                 aid = auth,
@@ -90,7 +91,7 @@ class MainActivity : AppCompatActivity()
                                         )
                             }
                         }
-                    val list:List<Authorandbook> = AppDatabase.getDatabase(this@MainActivity).authorDao().JoinedDetails(authorInput.editText?.text?.toString()?.lowercase())
+                    val list:List<Authorandbook> = db.authorDao().JoinedDetails(authorInput.editText?.text?.toString()?.lowercase())
                     withContext(Dispatchers.Main) {
 
                         var count:Int=0
