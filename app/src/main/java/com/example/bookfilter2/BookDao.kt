@@ -6,5 +6,5 @@ import androidx.room.OnConflictStrategy
 @Dao
 interface BookDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun InsertBooks(bookdetails: BookDetail)
+    suspend fun InsertBooks(bookdetails: BookDetail)
 }
