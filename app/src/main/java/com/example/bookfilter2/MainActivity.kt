@@ -93,11 +93,22 @@ class MainActivity : AppCompatActivity()
                     val list:List<Authorandbook> = AppDatabase.getDatabase(this@MainActivity).authorDao().JoinedDetails(authorInput.editText?.text?.toString()?.lowercase())
                     withContext(Dispatchers.Main) {
 
-                        dataCount.setText("Result: ${list.size}")
+                        var count:Int=0
                         var res = ""
-                        for (item in list) {
-                            res += "Result: ${item.title} (#${item.BookID})\n"
+
+                        if(list.size>=1){
+                            res+="Result: ${list[0].title} (${list[0].BookID})\n"
+                            count+=1
                         }
+                        if(list.size>=2){
+                            res+="Result: ${list[1].title} (${list[1].BookID})\n"
+                            count+=1
+                        }
+                        if(list.size>=2){
+                            res+="Result: ${list[2].title} (${list[2].BookID})\n"
+                            count+=1
+                        }
+                        dataCount.text="Result: $count"
                         dataResultTwo.text = res
                     }
                 }
