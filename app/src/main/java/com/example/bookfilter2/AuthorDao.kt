@@ -9,11 +9,11 @@ import androidx.room.Query
 @Dao
 interface AuthorDao {
     @Query("Select * from authordetails")
-    fun getAll():List<AuthorDetails>
+    suspend fun getAll():List<AuthorDetails>
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(auth:AuthorDetails)
+    suspend fun insert(auth:AuthorDetails)
     @Query("Select * from authordetails where author=:name")
-    fun getAuhtor(name:String):AuthorDetails
+    suspend fun getAuhtor(name:String):AuthorDetails
     @Query("Select * from AUTHORDETAILS a Join BooksDetail b on a.Aid=b.aid where Lower(a.author)=:name")
-    fun JoinedDetails(name:String?):List<Authorandbook>
+    suspend fun JoinedDetails(name:String?):List<Authorandbook>
 }

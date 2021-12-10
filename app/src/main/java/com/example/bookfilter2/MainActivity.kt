@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity()
                         dataCount.setText("Result: ${list.size}")
                         var res = ""
                         for (item in list) {
-                            res += "Result: ID: ${item.BookID} Title: ${item.title} \n"
+                            res += "Result: ${item.title} (#${item.BookID})\n"
                         }
                         dataResultTwo.text = res
                     }
