@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity()
                             res+="Result: ${list[1].title} (${list[1].BookID})\n"
                             count+=1
                         }
-                        if(list.size>=2){
+                        if(list.size>=3){
                             res+="Result: ${list[2].title} (${list[2].BookID})\n"
                             count+=1
                         }
